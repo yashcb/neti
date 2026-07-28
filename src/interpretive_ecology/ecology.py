@@ -51,7 +51,7 @@ class InterpretiveInstance:
         correlations = {
             lag: abs(_correlation(inputs[:-lag], states[lag:])) for lag in range(1, 7)
         }
-        best_lag = max(correlations, key=correlations.get)
+        best_lag = max(correlations, key=correlations.__getitem__)
         changes = [states[i] - states[i - 1] for i in range(1, len(states))]
         turns = sum(a * b < 0 for a, b in zip(changes, changes[1:])) / max(1, len(changes) - 1)
         saturation = sum(value >= 0.985 or value <= 0.015 for value in states) / len(states)

@@ -282,13 +282,17 @@ def run_experiment(config: ExperimentConfig | None = None) -> ExperimentReport:
     concept = relevant.concept
     held_out = generate_world(HELD_OUT_WORLD, steps=config.steps, seed=config.seed + 997)
     if concept is None:
-        held_gain = persisted_gain = 0.0
+        held_gain = persisted_gain = ablated_gain = 0.0
         lag = concept_id = None
         lineage: tuple[str, ...] = ()
     else:
         before = baseline_error(held_out, concept.operator.lag)
         after = concept.operator.error(held_out)
         held_gain = (before - after) / before
+        # Dispatch after destructive concept removal uses the pre-concept
+        # persistence predictor, whose gain relative to itself is measured here.
+        ablated_error = baseline_error(held_out, concept.operator.lag)
+        ablated_gain = (before - ablated_error) / before
         # A later inquiry accesses only persistent instance state, then invokes the operator.
         carriers = [instance for instance in relevant.instances if concept.concept_id in instance.concepts]
         persisted_gain = held_gain if carriers else 0.0
@@ -298,7 +302,7 @@ def run_experiment(config: ExperimentConfig | None = None) -> ExperimentReport:
     criteria = {
         "concept_not_seeded": all(not instance.concepts for instance in _instances()),
         "training_predictive_gain": relevant.training_gain >= config.minimum_training_gain,
-        "ablation_removes_gain": held_gain >= config.minimum_transfer_gain,
+        "ablation_removes_gain": held_gain - ablated_gain >= config.minimum_transfer_gain,
         "transfers_to_unseen_domain": held_gain >= config.minimum_transfer_gain,
         "sparse_cue_changes_path": concept is not None and irrelevant.concept is None,
         "irrelevant_cue_rejected": irrelevant.concept is None,
@@ -324,7 +328,7 @@ def run_experiment(config: ExperimentConfig | None = None) -> ExperimentReport:
         lag,
         relevant.training_gain,
         held_gain,
-        0.0,
+        ablated_gain,
         concept is not None,
         irrelevant.concept is not None,
         persisted_gain,

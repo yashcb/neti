@@ -41,11 +41,12 @@ to test the minimal hypothesis.
    formulas in `project_technicalities.md` have missing operands. Metric names,
    prose definitions, algorithms, and the decisive success list determine this
    implementation. No guessed scalar formula is introduced.
-2. **This phase is a controlled experiment, not the entire architecture.** The
-   specification describes open-ended birth, splitting, merging, death, tool
-   construction, language development, and environmental intervention without
-   enough mechanics to implement them honestly. The event vocabulary is
-   extensible, but those claims remain future work.
+2. **The system now implements the full named module topology, but not the end of
+   the research programme.** Birth, splitting, merging, decay/revival, tool
+   composition, language grounding, translation, world-model competition,
+   associative fields, hypergraphs, investigations, and resource allocation now
+   have executable state transitions. Open-ended representational invention and
+   claims about metaphysical interpretation remain empirical research questions.
 3. **A concept must be operational.** The emergent handle is only a local name.
    Its scientific content is the fitted lagged, bounded prediction operator;
    crystallization requires multi-domain predictive gain.
@@ -57,10 +58,11 @@ to test the minimal hypothesis.
    operator restores the persistence predictor, so ablated gain is zero by
    definition and the measured treatment-minus-ablation gain is the held-out
    gain.
-6. **Persistence is bounded.** The current check invokes the concept from
-   instance state during a subsequent held-out inquiry in the same process. It
-   does not establish survival across arbitrary future distribution shift or
-   indefinite deployment.
+6. **Persistence is bounded but crosses a real serialization boundary.** The
+   comprehensive check serializes graphs, fields, models, languages, and the
+   executable operator, reconstructs them from JSON, and measures later
+   behavior. It still does not establish survival across arbitrary distribution
+   shift, long sequences of unrelated inquiries, or indefinite deployment.
 7. **Cue understanding is partly architect-supplied.** Local traces acquire a
    small structural vocabulary and resonance uses explicit lexical anchors.
    Operator discovery is data-driven, but open-ended language grounding is not
@@ -101,13 +103,40 @@ to test the minimal hypothesis.
 
 ## Next decisive extensions
 
+The comprehensive behavioral evaluation produced an important negative result:
+the pooled coalition does not beat the strongest isolated learner on the
+current micro-world. This means the task validates cross-surface reuse but does
+not establish ecological synergy. That criterion remains failed rather than
+being absorbed into a favorable aggregate score.
+
 1. Learn boundary roles and capacity rather than supplying them.
 2. Pre-register a larger family of relevant, paraphrased, adversarial, and
    semantically similar but structurally irrelevant cues.
 3. Compare ecology against an equal-compute pooled learner and isolated-instance
    baselines to measure ecological synergy rather than mere task success.
 4. Add nonstationary worlds where old concepts require revision or splitting.
-5. Serialize ecology state, reload it after unrelated inquiries, and measure
-   persistence over a pre-registered horizon.
+5. Extend the implemented serialize/restart check with unrelated intervening
+   inquiries and measure persistence over a pre-registered horizon.
 6. Permit generated operators outside the architect-provided lag family and
    penalize hypothesis-class complexity.
+7. Construct tasks with distributed identifiability: no isolated history should
+   identify the transferable mechanism, while the coalition can do so without
+   receiving more total evidence than equal-compute controls.
+
+## Implemented architecture matrix
+
+| Architectural commitment | Executable mechanism | Behavioral validation |
+|---|---|---|
+| Explicit conceptual terrain | Typed relational hypergraph, motif collapse, split, query | Reified concepts retain motif ancestry and alter neighbors |
+| Pre-symbolic association | Local co-activation field with decaying perturbation | Different histories produce different resonance paths |
+| Competing world-models | Assumptions, evidence-for/against, revision counter | Better consequences change plausibility without deleting alternatives |
+| Executable internal language | Grounding gate, operator reference, composition | Ungrounded symbols are rejected |
+| Translation commons | Case-anchored negotiated mapping | Residue remains explicit rather than forced into agreement |
+| Investigation | Model-separating action utility per cost/reversibility | Highest-discrimination intervention is selected |
+| Tool creation | Composition of whitelisted operations in numeric limits | Incorrect tools fail validation before registration |
+| Autopoietic inquiry | Typed tensions, products, questions, budget, generative rate | Inquiry continues only while live tensions generate affordable structure |
+| Quality-diversity ecology | Uniqueness-weighted allocation with protected floor | A low-frequency niche receives nonzero protected resources |
+| Ecological evolution | Spawn, split, merge, dormancy, decay, archive/revive | Identity, status, operations, and recoverable lineage change |
+| Persistent transformation | JSON checkpoint of graphs, fields, models, languages | Restored concept changes later prediction and retrieval |
+| Operational reality | Destructive concept artifact ablation | Prediction gain disappears after removal |
+| Ecological synergy | Coalition versus strongest isolated learner | **Currently negative**, exposed in report |

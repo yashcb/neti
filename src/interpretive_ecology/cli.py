@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 from .experiment import ExperimentConfig, run_experiment
+from .evaluation import evaluate_behavior
 
 
 def main() -> int:
@@ -14,11 +15,21 @@ def main() -> int:
     parser.add_argument("--seed", type=int, default=19)
     parser.add_argument("--steps", type=int, default=180)
     parser.add_argument("--ledger", type=Path, help="write the full causal event ledger")
+    parser.add_argument(
+        "--comprehensive", action="store_true", help="also run ablation, restart, isolation, and seed controls"
+    )
     args = parser.parse_args()
     report = run_experiment(ExperimentConfig(seed=args.seed, steps=args.steps))
     if args.ledger:
         args.ledger.write_text(report.ledger_json + "\n", encoding="utf-8")
-    print(json.dumps(report.as_dict(), indent=2))
+    output = report.as_dict()
+    if args.comprehensive:
+        from dataclasses import asdict
+
+        output["behavioral_evaluation"] = asdict(
+            evaluate_behavior(ExperimentConfig(seed=args.seed, steps=args.steps))
+        )
+    print(json.dumps(output, indent=2))
     return 0 if report.success else 1
 
 
