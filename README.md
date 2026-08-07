@@ -26,11 +26,20 @@ report:
 PYTHONPATH=src python -m interpretive_ecology.cli --phases
 ```
 
+Run the stress tests for the first four phases and the active-inquiry and
+nonstationary-development experiments:
+
+```bash
+PYTHONPATH=src python -m interpretive_ecology.cli --advanced-phases
+```
+
 The programme freezes the original negative-synergy result, introduces a
 distributedly identifiable task, learns role/capacity alignment without using
 surface channel words, and synthesizes an ablatable typed operator. See
 [`docs/phase_1_4_protocol.md`](docs/phase_1_4_protocol.md) for hypotheses,
 controls, limitations, and interpretation rules.
+The advanced protocol and the remaining boundary before corpus work are in
+[`docs/phase_5_6_protocol.md`](docs/phase_5_6_protocol.md).
 
 The command exits non-zero unless every decisive success predicate passes and
 prints each predicate separately. The optional ledger contains the causal

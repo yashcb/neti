@@ -27,6 +27,7 @@ class DevelopmentalInstance:
     associative_field: AssociativeField = field(default_factory=AssociativeField)
     models: dict[str, CompetingWorldModel] = field(default_factory=dict)
     language: InternalLanguage = field(default_factory=InternalLanguage)
+    operator_artifacts: dict[str, dict[str, object]] = field(default_factory=dict)
     history: list[str] = field(default_factory=list)
     parent_ids: tuple[str, ...] = ()
     viability: dict[str, float] = field(
@@ -76,6 +77,18 @@ class DevelopmentalInstance:
     def concept_changes_retrieval(self, concept_id: str) -> bool:
         return concept_id in self.graph.nodes and bool(self.graph.neighbors(concept_id, "explains"))
 
+    def install_operator(self, operator_id: str, specification: Mapping[str, object]) -> None:
+        """Install a serializable executable specification in persistent state.
+
+        Execution remains type-specific, but ownership and semantics now cross
+        the same checkpoint boundary as the instance instead of being restored
+        from an unrelated side channel.
+        """
+        if not operator_id or not specification.get("kind"):
+            raise ValueError("an operator requires identity and typed semantics")
+        self.operator_artifacts[operator_id] = dict(specification)
+        self.history.append(f"operator:{operator_id}")
+
     def to_dict(self) -> dict[str, object]:
         return {
             "instance_id": self.instance_id,
@@ -85,6 +98,7 @@ class DevelopmentalInstance:
             "associative_field": asdict(self.associative_field),
             "models": {key: asdict(value) for key, value in self.models.items()},
             "language": asdict(self.language),
+            "operator_artifacts": self.operator_artifacts,
             "history": self.history,
             "parent_ids": self.parent_ids,
             "viability": self.viability,
@@ -117,6 +131,9 @@ class DevelopmentalInstance:
             ),
             models={key: CompetingWorldModel(**value) for key, value in models_raw.items()},
             language=InternalLanguage(symbols, dict(language_raw.get("compositions", {}))),
+            operator_artifacts={
+                key: dict(value) for key, value in cast(Mapping[str, Mapping[str, object]], raw.get("operator_artifacts", {})).items()
+            },
             history=list(history),
             parent_ids=tuple(parent_ids),
             viability=dict(viability),
@@ -178,12 +195,18 @@ class Ecology:
     def split(self, instance_id: str, left_ops: Iterable[str], right_ops: Iterable[str]) -> tuple[str, str]:
         parent = self.instances[instance_id]
         left_id, right_id = f"{instance_id}:a", f"{instance_id}:b"
-        left = DevelopmentalInstance(left_id, tuple(left_ops), dict(parent.tension_sensitivities), parent_ids=(instance_id,))
-        right = DevelopmentalInstance(right_id, tuple(right_ops), dict(parent.tension_sensitivities), parent_ids=(instance_id,))
-        for child in (left, right):
-            child.history = list(parent.history)
-            child.viability = dict(parent.viability)
+        children = []
+        for child_id, operations in ((left_id, left_ops), (right_id, right_ops)):
+            # A split specializes inherited developmental state; it must not
+            # create two amnesiac instances that merely share a parent label.
+            child = DevelopmentalInstance.from_dict(parent.to_dict())
+            child.instance_id = child_id
+            child.operations = tuple(operations)
+            child.parent_ids = (instance_id,)
+            child.status = "active"
             self.add(child)
+            children.append(child)
+        left, right = children
         parent.status = "dormant"
         self.ledger.append(
             EventType.INSTANCE_SPLIT,

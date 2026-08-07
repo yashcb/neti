@@ -109,10 +109,18 @@ class RelationalHypergraph:
         graph = cls()
         for raw in raw_nodes.values():
             assert isinstance(raw, dict)
-            graph.add_node(HyperNode(**raw))
+            graph.add_node(HyperNode(**{**raw, "lineage": tuple(raw.get("lineage", ())) }))
         for raw in raw_edges.values():
             assert isinstance(raw, dict)
-            graph.add_edge(HyperEdge(**raw))
+            graph.add_edge(
+                HyperEdge(
+                    **{
+                        **raw,
+                        "members": tuple(raw.get("members", ())),
+                        "lineage": tuple(raw.get("lineage", ())),
+                    }
+                )
+            )
         return graph
 
 
