@@ -35,6 +35,10 @@ def main() -> int:
         reports = run_all_phases()
         print(json.dumps(reports, indent=2))
         return 0 if all(all(report["predicates"].values()) for report in reports.values()) else 1
+    args = parser.parse_args()
+    if args.phases:
+        print(json.dumps(run_all_phases(), indent=2))
+        return 0
     report = run_experiment(ExperimentConfig(seed=args.seed, steps=args.steps))
     if args.ledger:
         args.ledger.write_text(report.ledger_json + "\n", encoding="utf-8")
