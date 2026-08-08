@@ -20,6 +20,9 @@ The decision has three levels:
 
 The repository reaches level 2, not level 3.
 
+The implementation and data-acquisition plan for that bounded pilot is defined
+in [`phase_7_protocol.md`](phase_7_protocol.md).
+
 ## Re-audit of Phases 1–6
 
 The 35-test suite passes. Phase 1 honestly reproduces the useful negative
