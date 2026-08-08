@@ -33,6 +33,12 @@ nonstationary-development experiments:
 PYTHONPATH=src python -m interpretive_ecology.cli --advanced-phases
 ```
 
+Run the six adversarial readiness controls named before Phase 7:
+
+```bash
+PYTHONPATH=src python -m interpretive_ecology.cli --readiness-controls
+```
+
 The programme freezes the original negative-synergy result, introduces a
 distributedly identifiable task, learns role/capacity alignment without using
 surface channel words, and synthesizes an ablatable typed operator. See
