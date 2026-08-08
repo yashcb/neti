@@ -279,3 +279,9 @@ synthetic result, one controlled external result, and one human-trace shadow
 result are archived; every required ablation is run; and the conjunctive
 confirmatory vector passes without hiding negative pooling or grammar results.
 
+## Implementation status
+
+Phase 7.0 and the bounded synthetic Phase 7.1 pilot are now executable. Their
+methods, results, limitations, and interpretation are archived in
+[`phase_7_results.md`](phase_7_results.md). The positive result authorizes Phase
+7.2 design; it does not satisfy the completion gate above.
