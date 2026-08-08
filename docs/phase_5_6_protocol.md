@@ -85,6 +85,13 @@ continuous non-bimodal latent states, unsafe or irreversible intervention
 choices, false regime alarms under correlated noise, merge-after-split tests,
 and held-out primitive families not contained in the initial grammar.
 
+These six controls are now executable and reported in
+[`phase_7_readiness.md`](phase_7_readiness.md). Their positive predicates permit
+a bounded episodic pilot, not unrestricted corpus scaling. In particular, the
+held-out NAND control intentionally demonstrates the initial grammar's 0.75
+ceiling; an oracle table reaches 1.0 but does not count as autonomous primitive
+invention.
+
 ## Deterministic reference outcome
 
 Under the committed default configuration, all falsifier, Phase 5, and Phase 6

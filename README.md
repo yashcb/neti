@@ -33,6 +33,12 @@ nonstationary-development experiments:
 PYTHONPATH=src python -m interpretive_ecology.cli --advanced-phases
 ```
 
+Run the six adversarial readiness controls named before Phase 7:
+
+```bash
+PYTHONPATH=src python -m interpretive_ecology.cli --readiness-controls
+```
+
 The programme freezes the original negative-synergy result, introduces a
 distributedly identifiable task, learns role/capacity alignment without using
 surface channel words, and synthesizes an ablatable typed operator. See
@@ -40,6 +46,9 @@ surface channel words, and synthesizes an ablatable typed operator. See
 controls, limitations, and interpretation rules.
 The advanced protocol and the remaining boundary before corpus work are in
 [`docs/phase_5_6_protocol.md`](docs/phase_5_6_protocol.md).
+The concrete episodic data model, acquisition ladder, experimental arms, and
+go/no-go criteria for Phase 7 are specified in
+[`docs/phase_7_protocol.md`](docs/phase_7_protocol.md).
 
 The command exits non-zero unless every decisive success predicate passes and
 prints each predicate separately. The optional ledger contains the causal
