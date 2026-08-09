@@ -12,6 +12,7 @@ from .phases import run_all_phases
 from .advanced_phases import run_advanced_phases
 from .readiness import run_readiness_controls
 from .phase7 import phase_seven_as_dict
+from .phase72 import phase_seven_two_as_dict
 
 
 def main() -> int:
@@ -34,7 +35,14 @@ def main() -> int:
     parser.add_argument(
         "--phase-seven", action="store_true", help="run the Phase 7.0 episode kernel and Phase 7.1 synthetic pilot"
     )
+    parser.add_argument(
+        "--phase-seven-two", action="store_true", help="run Phase 7.2 developmental order and identity controls"
+    )
     args = parser.parse_args()
+    if args.phase_seven_two:
+        report = phase_seven_two_as_dict()
+        print(json.dumps(report, indent=2))
+        return 0 if all(report["predicates"].values()) else 1
     if args.phase_seven:
         report = phase_seven_as_dict()
         print(json.dumps(report, indent=2))

@@ -285,3 +285,10 @@ Phase 7.0 and the bounded synthetic Phase 7.1 pilot are now executable. Their
 methods, results, limitations, and interpretation are archived in
 [`phase_7_results.md`](phase_7_results.md). The positive result authorizes Phase
 7.2 design; it does not satisfy the completion gate above.
+
+Phase 7.2 is also now executable. Its matched curriculum-order, uncertain
+linkage, identity/reset, selective-merge, and 64-family stress results are in
+[`phase_7_2_results.md`](phase_7_2_results.md). Concrete real-source episode
+examples, extraction rules, sample-size guidance, and evaluation modes for
+Phases 7.3–7.4 are in
+[`phase_7_real_data_guide.md`](phase_7_real_data_guide.md).

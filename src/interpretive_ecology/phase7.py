@@ -76,6 +76,7 @@ class EpisodeDelta:
     operator_id: str
     specification: dict[str, object]
     evidence_ids: tuple[str, ...]
+    delta_type: str = "install_operator"
 
 
 @dataclass(frozen=True)
@@ -131,6 +132,8 @@ class EpisodeRecord:
             raise ValueError("an owner must be able to see its observation")
         if not set(self.accepted_delta.evidence_ids) <= set(observation_ids):
             raise ValueError("state delta cites unknown evidence")
+        if self.accepted_delta.delta_type not in {"install_operator", "record_tension"}:
+            raise ValueError("unsupported episode state delta")
         public = self.public_json()
         for key in self.private_truth:
             if key in {"mechanism_name", "truth_table", "answer_key"} and f'"{key}"' in public:
@@ -141,6 +144,15 @@ class EpisodeKernel:
     """Close and replay typed ecology transitions around immutable checkpoints."""
 
     protocol_digest = _digest(PHASE_SEVEN_PROTOCOL)
+
+    @staticmethod
+    def _apply_delta(ecology: Ecology, delta: EpisodeDelta) -> EventType:
+        instance = ecology.instances[delta.actor_id]
+        if delta.delta_type == "install_operator":
+            instance.install_operator(delta.operator_id, delta.specification)
+            return EventType.INTERPRETATION_COMMITTED
+        instance.history.append(f"tension:{delta.operator_id}:unresolved")
+        return EventType.TENSION_BORN
 
     @staticmethod
     def _apply_observations(
@@ -185,10 +197,10 @@ class EpisodeKernel:
         if delta.actor_id not in working.instances:
             raise ValueError("delta actor is absent from prior ecology")
         EpisodeKernel._apply_observations(working, observations, delta.actor_id)
-        working.instances[delta.actor_id].install_operator(delta.operator_id, delta.specification)
+        event_type = EpisodeKernel._apply_delta(working, delta)
         parent = (working.ledger.events[-1].event_id,) if working.ledger.events else ()
         event = working.ledger.append(
-            EventType.INTERPRETATION_COMMITTED,
+            event_type,
             actors=(delta.actor_id,), targets=(delta.operator_id,), parents=parent,
             delta={"operator": delta.operator_id, "specification": delta.specification},
             evidence=delta.evidence_ids, dependencies=(delta.operator_id,),
@@ -212,10 +224,10 @@ class EpisodeKernel:
         prior = Ecology.restore(record.prior_checkpoint)
         delta = record.accepted_delta
         EpisodeKernel._apply_observations(prior, record.observations, delta.actor_id)
-        prior.instances[delta.actor_id].install_operator(delta.operator_id, delta.specification)
+        event_type = EpisodeKernel._apply_delta(prior, delta)
         parent = (prior.ledger.events[-1].event_id,) if prior.ledger.events else ()
         event = prior.ledger.append(
-            EventType.INTERPRETATION_COMMITTED,
+            event_type,
             actors=(delta.actor_id,), targets=(delta.operator_id,), parents=parent,
             delta={"operator": delta.operator_id, "specification": delta.specification},
             evidence=delta.evidence_ids, dependencies=(delta.operator_id,),

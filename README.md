@@ -46,6 +46,13 @@ synthetic curriculum:
 PYTHONPATH=src python -m interpretive_ecology.cli --phase-seven
 ```
 
+Run the Phase 7.2 developmental-order, uncertain-linkage, identity, merge, and
+mechanism-population controls:
+
+```bash
+PYTHONPATH=src python -m interpretive_ecology.cli --phase-seven-two
+```
+
 The programme freezes the original negative-synergy result, introduces a
 distributedly identifiable task, learns role/capacity alignment without using
 surface channel words, and synthesizes an ablatable typed operator. See
@@ -58,6 +65,10 @@ go/no-go criteria for Phase 7 are specified in
 [`docs/phase_7_protocol.md`](docs/phase_7_protocol.md).
 The committed Phase 7.0–7.1 measurements and bounded interpretation are in
 [`docs/phase_7_results.md`](docs/phase_7_results.md).
+Phase 7.2 results are in
+[`docs/phase_7_2_results.md`](docs/phase_7_2_results.md), and the concrete
+real-data construction guide for Phases 7.3–7.4 is in
+[`docs/phase_7_real_data_guide.md`](docs/phase_7_real_data_guide.md).
 
 The command exits non-zero unless every decisive success predicate passes and
 prints each predicate separately. The optional ledger contains the causal
