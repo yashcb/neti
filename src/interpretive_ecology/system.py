@@ -15,7 +15,7 @@ from .cognition import (
     InternalLanguage,
     RelationalHypergraph,
 )
-from .events import EventLedger, EventType
+from .events import Event, EventLedger, EventType
 
 
 @dataclass
@@ -226,6 +226,19 @@ class Ecology:
             parent_ids=(left_id, right_id),
         )
         merged.history = list(dict.fromkeys(left.history + right.history))
+        # Recombination must preserve executable and representational inheritance,
+        # rather than creating an amnesiac shell with a composite operation list.
+        merged.graph = RelationalHypergraph.from_dict(left.graph.to_dict())
+        for node_id, node in right.graph.nodes.items():
+            if node_id not in merged.graph.nodes:
+                merged.graph.add_node(node)
+        for edge_id, edge in right.graph.edges.items():
+            if edge_id not in merged.graph.edges and all(n in merged.graph.nodes for n in edge.nodes):
+                merged.graph.add_edge(edge)
+        merged.operator_artifacts = {
+            **{key: dict(value) for key, value in left.operator_artifacts.items()},
+            **{key: dict(value) for key, value in right.operator_artifacts.items()},
+        }
         self.add(merged)
         left.status = right.status = "dormant"
         self.ledger.append(
@@ -270,14 +283,28 @@ class Ecology:
             "instances": {key: value.to_dict() for key, value in self.instances.items()},
             "archive": self.archive,
             "resource_pool": self.resource_pool,
+            "ledger": [asdict(event) for event in self.ledger.events],
         }
         return json.dumps(payload, sort_keys=True)
 
     @classmethod
     def restore(cls, checkpoint: str) -> "Ecology":
         raw = json.loads(checkpoint)
-        return cls(
+        ecology = cls(
             instances={key: DevelopmentalInstance.from_dict(value) for key, value in raw["instances"].items()},
             archive=raw["archive"],
             resource_pool=raw["resource_pool"],
         )
+        ecology.ledger.events = [
+            Event(
+                event_id=item["event_id"], event_type=EventType(item["event_type"]),
+                actor_ids=tuple(item["actor_ids"]), target_ids=tuple(item["target_ids"]),
+                parent_event_ids=tuple(item["parent_event_ids"]), preconditions=item["preconditions"],
+                state_delta=item["state_delta"], evidence_refs=tuple(item["evidence_refs"]),
+                timestamp=item["timestamp"], confidence=item["confidence"],
+                affected_dependencies=tuple(item.get("affected_dependencies", ())),
+                reversible=item.get("reversible", True),
+            ) for item in raw.get("ledger", [])
+        ]
+        ecology.ledger.validate()
+        return ecology

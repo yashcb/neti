@@ -46,16 +46,25 @@ class InvestigationAction:
     observations: dict[str, float]
     cost: float
     reversibility: float
+    harm: float = 0.0
 
 
 def select_discriminating_action(
-    models: Iterable[CompetingWorldModel], actions: Iterable[InvestigationAction]
+    models: Iterable[CompetingWorldModel], actions: Iterable[InvestigationAction],
+    *, maximum_harm: float = 1.0, minimum_reversibility: float = 0.0,
 ) -> InvestigationAction:
-    """Choose consequences that maximally separate live model predictions per cost."""
-    candidates = tuple(actions)
+    """Choose a discriminating action subject to constitutional safety bounds.
+
+    Safety is a feasibility constraint, not a commensurable penalty: arbitrarily
+    high information gain cannot compensate for prohibited harm or irreversibility.
+    """
+    candidates = tuple(
+        action for action in actions
+        if action.harm <= maximum_harm and action.reversibility >= minimum_reversibility
+    )
     live = tuple(models)
     if not candidates or len(live) < 2:
-        raise ValueError("discrimination requires actions and competing models")
+        raise ValueError("discrimination requires safe actions and competing models")
 
     def score(action: InvestigationAction) -> float:
         predictions = [action.observations.get(model.model_id, 0.0) for model in live]
