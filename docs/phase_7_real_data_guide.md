@@ -11,6 +11,10 @@ system traces and posterior checkpoints are produced online by this repository.
 Never fabricate missing counterfactuals. Mark unavailable fields `open`,
 `unknown`, or `censored`.
 
+A researched assessment of controlled-system candidates, human-process sources,
+and the appropriate role of philosophical/metaphysical material is available in
+[`phase_7_3_7_4_dataset_research.md`](phase_7_3_7_4_dataset_research.md).
+
 ## 2. Phase 7.3: controlled external systems
 
 ### Suitable sources
